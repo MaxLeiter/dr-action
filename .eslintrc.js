@@ -10,4 +10,9 @@ module.exports = {
   rules: {
     // Add custom rules here
   },
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+    },
+  ],
 };
