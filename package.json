@@ -1,0 +1,23 @@
+{
+  "name": "dr-action",
+  "version": "1.0.0",
+  "description": "Initial commit",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint . --ext .ts --ext .tsx",
+    "tsc": "tsc --noEmit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@octokit/auth-app": "^6.1.1",
+    "@octokit/rest": "^20.1.0",
+    "@octokit/types": "^13.4.1",
+    "@types/node": "^20.12.7",
+    "eslint": "^9.1.1",
+    "openai": "^4.38.5",
+    "typescript": "^5.4.5"
+  }
+}

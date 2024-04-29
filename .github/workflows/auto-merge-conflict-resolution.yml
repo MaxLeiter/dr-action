@@ -26,6 +26,11 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Set Git committer information
+        run: |
+          git config user.name "Devin"
+          git config user.email "devin@example.com"
+
       - name: Check for merge conflicts in pnpm-lock.yaml
         id: check
         run: |
@@ -33,14 +38,14 @@ jobs:
           git checkout ${{ github.base_ref }}
           git merge --no-commit --no-ff ${{ github.head_ref }}
           if git ls-files -u | grep -q 'pnpm-lock.yaml'; then
-            echo "Merge conflict detected in pnpm-lock.yaml" && echo "::set-output name=conflict::true"
+            echo "Merge conflict detected in pnpm-lock.yaml" && echo "conflict=true" >> $GITHUB_ENV
           else
-            echo "No merge conflict in pnpm-lock.yaml" && echo "::set-output name=conflict::false"
+            echo "No merge conflict in pnpm-lock.yaml" && echo "conflict=false" >> $GITHUB_ENV
           fi
           git merge --abort
 
       - name: Resolve merge conflict by running pnpm install
-        if: steps.check.outputs.conflict == 'true'
+        if: env.conflict == 'true'
         run: |
           git checkout ${{ github.head_ref }}
           git merge origin/${{ github.base_ref }}
