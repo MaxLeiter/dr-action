@@ -26,6 +26,11 @@ jobs:
       - name: Install pnpm
         run: npm install -g pnpm
 
+      - name: Set Git committer information
+        run: |
+          git config user.name "Devin"
+          git config user.email "devin@example.com"
+
       - name: Check for merge conflicts in pnpm-lock.yaml
         id: check
         run: |
@@ -42,8 +47,6 @@ jobs:
       - name: Resolve merge conflict by running pnpm install
         if: steps.check.outputs.conflict == 'true'
         run: |
-          git config user.name "Devin"
-          git config user.email "devin@example.com"
           git checkout ${{ github.head_ref }}
           git merge origin/${{ github.base_ref }}
           pnpm install
