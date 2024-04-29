@@ -42,6 +42,8 @@ jobs:
       - name: Resolve merge conflict by running pnpm install
         if: steps.check.outputs.conflict == 'true'
         run: |
+          git config user.name "Devin"
+          git config user.email "devin@example.com"
           git checkout ${{ github.head_ref }}
           git merge origin/${{ github.base_ref }}
           pnpm install
