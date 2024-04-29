@@ -1,0 +1,51 @@
+name: Auto Merge Conflict Resolution
+
+on: 
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  auto-merge-conflict-resolution:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'synchronize' }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Check for merge conflicts in pnpm-lock.yaml
+        id: check
+        run: |
+          git fetch origin ${{ github.base_ref }}
+          git checkout ${{ github.base_ref }}
+          git merge --no-commit --no-ff ${{ github.head_ref }}
+          if git ls-files -u | grep -q 'pnpm-lock.yaml'; then
+            echo "Merge conflict detected in pnpm-lock.yaml" && echo "::set-output name=conflict::true"
+          else
+            echo "No merge conflict in pnpm-lock.yaml" && echo "::set-output name=conflict::false"
+          fi
+          git merge --abort
+
+      - name: Resolve merge conflict by running pnpm install
+        if: steps.check.outputs.conflict == 'true'
+        run: |
+          git checkout ${{ github.head_ref }}
+          git merge origin/${{ github.base_ref }}
+          pnpm install
+          git add pnpm-lock.yaml
+          git commit -m "Resolve merge conflict in pnpm-lock.yaml"
+          git push
