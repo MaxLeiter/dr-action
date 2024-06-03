@@ -73,7 +73,6 @@ jobs:
           echo "Suggestions file exists."
         else
           echo "Suggestions file does not exist."
-        fi
 
     - name: Upload Suggestions Artifact
       uses: actions/upload-artifact@v3
