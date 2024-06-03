@@ -43,7 +43,6 @@ jobs:
         cat failed_files.txt
 
     - name: Run AI Fix Script
-      if: failure()
       run: |
         echo "Running AI Fix Script..."
         node ai-fix-script.js
