@@ -38,8 +38,8 @@ jobs:
       run: |
         echo "Identifying failed files..."
         touch failed_files.txt
-        grep -l "error" eslint.log > failed_files.txt
-        grep -l "error" prettier.log >> failed_files.txt
+        grep -l "error" eslint.log > failed_files.txt || true
+        grep -l "error" prettier.log >> failed_files.txt || true
         if [ ! -s failed_files.txt ]; then
           echo "No failed files found." > failed_files.txt
         fi
