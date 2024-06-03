@@ -39,6 +39,12 @@ const payload = {
 // Log the current working directory
 console.log('Current working directory:', process.cwd());
 
+// Ensure the payload is not empty before sending the request
+if (files.length === 0) {
+  console.log('No valid files to send to the API.');
+  process.exit(0);
+}
+
 // Call the Google Generative AI API
 const options = {
   hostname: 'ai.google.dev',
