@@ -44,6 +44,7 @@ jobs:
         if [ ! -s failed_files.txt ]; then
           echo "No failed files found." > failed_files.txt
         fi
+        echo "Contents of failed_files.txt:"
         cat failed_files.txt
 
     - name: Run AI Fix Script
