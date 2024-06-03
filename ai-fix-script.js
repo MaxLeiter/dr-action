@@ -36,7 +36,14 @@ fetch('https://ai.google.dev/api/rest', {
   },
   body: JSON.stringify(payload)
 })
-  .then(response => response.json())
+  .then(response => {
+    if (!response.ok) {
+      return response.text().then(text => {
+        throw new Error(`HTTP error! status: ${response.status}, body: ${text}`);
+      });
+    }
+    return response.json();
+  })
   .then(data => {
     // Parse the response and create suggestions
     const suggestions = data.suggestions.map(suggestion => {
