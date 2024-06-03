@@ -18,16 +18,16 @@ jobs:
         node-version: '14'
 
     - name: Install dependencies
-      run: npm install
+      run: pnpm install
 
     - name: Run ESLint
       id: eslint
-      run: npm run lint -- --format json --output-file eslint.log
+      run: pnpm run lint -- --format json --output-file eslint.log
       continue-on-error: true
 
     - name: Run Prettier
       id: prettier
-      run: npm run prettier -- --loglevel debug > prettier.log
+      run: pnpm run prettier -- --loglevel debug > prettier.log
       continue-on-error: true
 
     - name: Install jq
