@@ -80,8 +80,9 @@ const req = https.request(options, res => {
 
       // Write the suggestions to a file
       try {
-        fs.writeFileSync('suggestions.txt', suggestions.join('\n'), 'utf-8');
-        console.log('Suggestions written to suggestions.txt');
+        const suggestionsFilePath = `${process.cwd()}/suggestions.txt`;
+        fs.writeFileSync(suggestionsFilePath, suggestions.join('\n'), 'utf-8');
+        console.log(`Suggestions written to ${suggestionsFilePath}`);
       } catch (error) {
         console.error('Error writing suggestions to file:', error);
       }
