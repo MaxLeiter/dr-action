@@ -10,42 +10,66 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '14'
+        node-version: '20'
+
+    - name: Install pnpm
+      run: npm install -g pnpm
 
     - name: Install dependencies
-      run: npm install
+      run: pnpm install
 
     - name: Run ESLint
       id: eslint
-      run: npm run lint -- --format json --output-file eslint.log
-      continue-on-error: true
+      run: pnpm run lint | tee eslint.log
 
     - name: Run Prettier
       id: prettier
-      run: npm run prettier -- --loglevel debug > prettier.log
-      continue-on-error: true
+      run: pnpm run prettier | tee prettier.log
 
     - name: Install jq
       run: sudo apt-get install -y jq
 
     - name: Identify Failed Files
-      if: failure()
       run: |
-        grep -l "error" eslint.log > failed_files.txt
-        grep -l "error" prettier.log >> failed_files.txt
+        echo "Identifying failed files..."
+        touch failed_files.txt
+        grep -l "error" eslint.log > failed_files.txt || true
+        grep -l "error" prettier.log >> failed_files.txt || true
+        if [ ! -s failed_files.txt ]; then
+          echo "No failed files found." > failed_files.txt
+        fi
+        echo "Contents of failed_files.txt:"
+        cat failed_files.txt
 
     - name: Run AI Fix Script
-      if: failure()
-      run: node ai-fix-script.js
+      run: |
+        echo "Running AI Fix Script..."
+        node ai-fix-script.js
 
     - name: Parse and Comment Suggestions
-      if: failure()
       run: |
         cat suggestions.txt | while IFS= read -r suggestion; do
           gh pr comment ${{ github.event.pull_request.number }} --body "$suggestion"
         done
+
+    - name: Check if Suggestions File Exists
+      run: |
+        if [ -f suggestions.txt ]; then
+          echo "Suggestions file exists."
+        else
+          echo "Suggestions file does not exist."
+        fi
+
+    - name: Upload Suggestions Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: suggestions
+        path: suggestions.txt
+
+# This is a test comment to create a new commit on the test-github-action branch
+# Adding a minor change to trigger the GitHub Action
