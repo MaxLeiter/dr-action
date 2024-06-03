@@ -58,6 +58,7 @@ const req = https.request(options, res => {
   });
 
   res.on('end', () => {
+    console.log('API call completed with status code:', res.statusCode);
     if (res.statusCode !== 200) {
       console.error(`HTTP error! status: ${res.statusCode}, body: ${data}`);
       return;
@@ -94,5 +95,6 @@ req.on('error', error => {
   console.error('Error:', error);
 });
 
+console.log('Sending API request with payload:', JSON.stringify(payload, null, 2));
 req.write(JSON.stringify(payload));
 req.end();
