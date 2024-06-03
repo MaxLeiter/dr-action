@@ -1,0 +1,18 @@
+{
+  "name": "dr-action",
+  "version": "1.0.0",
+  "description": "A project to demonstrate GitHub Actions with Google Generative AI API",
+  "main": "ai-fix-script.js",
+  "scripts": {
+    "lint": "eslint .",
+    "prettier": "prettier --check ."
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "prettier": "^2.3.2",
+    "node-fetch": "^2.6.1"
+  },
+  "author": "",
+  "license": "ISC"
+}
