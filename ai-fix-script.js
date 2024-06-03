@@ -35,6 +35,7 @@ fetch('https://ai.google.dev/api/rest', {
 
     // Write the suggestions to a file
     fs.writeFileSync('suggestions.txt', suggestions.join('\n'), 'utf-8');
+    console.log('Suggestions written to suggestions.txt');
   })
   .catch(error => {
     console.error('Error:', error);
