@@ -50,6 +50,15 @@ jobs:
           gh pr comment ${{ github.event.pull_request.number }} --body "$suggestion"
         done
 
+    - name: Check if Suggestions File Exists
+      if: failure()
+      run: |
+        if [ -f suggestions.txt ]; then
+          echo "Suggestions file exists."
+        else
+          echo "Suggestions file does not exist."
+        fi
+
     - name: Upload Suggestions Artifact
       if: failure()
       uses: actions/upload-artifact@v2
