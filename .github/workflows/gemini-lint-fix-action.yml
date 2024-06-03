@@ -25,14 +25,14 @@ jobs:
 
     - name: Run ESLint
       id: eslint
-      run: pnpm run lint | tee eslint.log
+      run: pnpm run lint --verbose | tee eslint.log
 
     - name: Output ESLint Log
       run: cat eslint.log
 
     - name: Run Prettier
       id: prettier
-      run: pnpm run prettier | tee prettier.log
+      run: pnpm run prettier --verbose | tee prettier.log
 
     - name: Output Prettier Log
       run: cat prettier.log
