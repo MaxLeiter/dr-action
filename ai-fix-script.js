@@ -21,12 +21,16 @@ if (failedFiles.length === 0) {
 
 // Prepare the API request payload
 const files = failedFiles.map(filePath => {
+  if (!fs.existsSync(filePath)) {
+    console.log(`File not found: ${filePath}`);
+    return null;
+  }
   const content = fs.readFileSync(filePath, 'utf-8');
   return {
     path: filePath,
     content: content
   };
-});
+}).filter(Boolean);
 
 const payload = {
   files: files
