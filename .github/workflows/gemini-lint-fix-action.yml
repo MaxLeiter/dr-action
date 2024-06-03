@@ -41,10 +41,14 @@ jobs:
         grep -l "error" eslint.log > failed_files.txt || true
         grep -l "error" prettier.log >> failed_files.txt || true
         if [ ! -s failed_files.txt ]; then
-          echo "No failed files found." > failed_files.txt
+          rm failed_files.txt
         fi
         echo "Contents of failed_files.txt:"
-        cat failed_files.txt
+        if [ -f failed_files.txt ]; then
+          cat failed_files.txt
+        else
+          echo "No failed files found."
+        fi
 
     - name: Run AI Fix Script
       run: |
