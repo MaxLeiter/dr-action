@@ -37,12 +37,16 @@ jobs:
     - name: Identify Failed Files
       if: failure()
       run: |
+        echo "Identifying failed files..."
         grep -l "error" eslint.log > failed_files.txt
         grep -l "error" prettier.log >> failed_files.txt
+        cat failed_files.txt
 
     - name: Run AI Fix Script
       if: failure()
-      run: node ai-fix-script.js
+      run: |
+        echo "Running AI Fix Script..."
+        node ai-fix-script.js
 
     - name: Parse and Comment Suggestions
       if: failure()
