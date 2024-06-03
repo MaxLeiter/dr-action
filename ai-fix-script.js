@@ -13,6 +13,12 @@ if (!fs.existsSync('failed_files.txt')) {
 const failedFiles = fs.readFileSync('failed_files.txt', 'utf-8').split('\n').filter(Boolean);
 console.log('Failed files:', failedFiles);
 
+// Handle the case where no failed files are found
+if (failedFiles.length === 0) {
+  console.log('No failed files found.');
+  process.exit(0);
+}
+
 // Prepare the API request payload
 const files = failedFiles.map(filePath => {
   const content = fs.readFileSync(filePath, 'utf-8');
