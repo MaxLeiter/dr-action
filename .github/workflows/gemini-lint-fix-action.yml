@@ -27,9 +27,15 @@ jobs:
       id: eslint
       run: pnpm run lint | tee eslint.log
 
+    - name: Output ESLint Log
+      run: cat eslint.log
+
     - name: Run Prettier
       id: prettier
       run: pnpm run prettier | tee prettier.log
+
+    - name: Output Prettier Log
+      run: cat prettier.log
 
     - name: Install jq
       run: sudo apt-get install -y jq
