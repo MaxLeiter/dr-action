@@ -14,7 +14,7 @@ const failedFiles = fs.readFileSync('failed_files.txt', 'utf-8').split('\n').fil
 console.log('Failed files:', failedFiles);
 
 // Handle the case where no failed files are found
-if (failedFiles.length === 0) {
+if (failedFiles.length === 0 || failedFiles[0] === 'No failed files found.') {
   console.log('No failed files found.');
   process.exit(0);
 }
