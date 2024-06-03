@@ -1,5 +1,6 @@
+/* eslint-env node */
+
 const fs = require('fs');
-const path = require('path');
 
 // Read the failed files from the log
 const failedFiles = fs.readFileSync('failed_files.txt', 'utf-8').split('\n').filter(Boolean);
