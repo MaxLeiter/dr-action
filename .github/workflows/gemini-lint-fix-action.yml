@@ -25,12 +25,12 @@ jobs:
 
     - name: Run ESLint
       id: eslint
-      run: pnpm run lint -- --format json --output-file eslint.log
+      run: pnpm run lint
       continue-on-error: true
 
     - name: Run Prettier
       id: prettier
-      run: pnpm run prettier -- --loglevel debug > prettier.log
+      run: pnpm run prettier
       continue-on-error: true
 
     - name: Install jq
