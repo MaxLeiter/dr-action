@@ -52,14 +52,12 @@ jobs:
         node ai-fix-script.js
 
     - name: Parse and Comment Suggestions
-      if: failure()
       run: |
         cat suggestions.txt | while IFS= read -r suggestion; do
           gh pr comment ${{ github.event.pull_request.number }} --body "$suggestion"
         done
 
     - name: Check if Suggestions File Exists
-      if: failure()
       run: |
         if [ -f suggestions.txt ]; then
           echo "Suggestions file exists."
@@ -68,7 +66,6 @@ jobs:
         fi
 
     - name: Upload Suggestions Artifact
-      if: failure()
       uses: actions/upload-artifact@v3
       with:
         name: suggestions
