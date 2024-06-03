@@ -24,6 +24,9 @@ const payload = {
   files: files
 };
 
+// Log the current working directory
+console.log('Current working directory:', process.cwd());
+
 // Call the Google Generative AI API
 fetch('https://ai.google.dev/api/rest', {
   method: 'POST',
@@ -46,8 +49,12 @@ fetch('https://ai.google.dev/api/rest', {
     }
 
     // Write the suggestions to a file
-    fs.writeFileSync('suggestions.txt', suggestions.join('\n'), 'utf-8');
-    console.log('Suggestions written to suggestions.txt');
+    try {
+      fs.writeFileSync('suggestions.txt', suggestions.join('\n'), 'utf-8');
+      console.log('Suggestions written to suggestions.txt');
+    } catch (error) {
+      console.error('Error writing suggestions to file:', error);
+    }
   })
   .catch(error => {
     console.error('Error:', error);
