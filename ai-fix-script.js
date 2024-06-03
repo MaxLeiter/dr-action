@@ -45,6 +45,9 @@ fetch('https://ai.google.dev/api/rest', {
     return response.json();
   })
   .then(data => {
+    // Log the API response
+    console.log('API response:', JSON.stringify(data, null, 2));
+
     // Parse the response and create suggestions
     const suggestions = data.suggestions.map(suggestion => {
       return `\`\`\`suggestion\n${suggestion.diff}\n\`\`\``;
