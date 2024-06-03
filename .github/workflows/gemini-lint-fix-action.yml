@@ -41,9 +41,13 @@ jobs:
         touch failed_files.txt
         grep -l "error" eslint.log > failed_files.txt
         grep -l "error" prettier.log >> failed_files.txt
+        if [ ! -s failed_files.txt ]; then
+          echo "No failed files found." > failed_files.txt
+        fi
         cat failed_files.txt
 
     - name: Run AI Fix Script
+      if: failure()
       run: |
         echo "Running AI Fix Script..."
         node ai-fix-script.js
