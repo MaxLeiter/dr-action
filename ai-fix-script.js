@@ -5,8 +5,8 @@ const https = require('https');
 
 // Check if failed_files.txt exists
 if (!fs.existsSync('failed_files.txt')) {
-  console.error('Error: failed_files.txt not found.');
-  process.exit(1);
+  console.log('No failed files found.');
+  process.exit(0);
 }
 
 // Read the failed files from the log
