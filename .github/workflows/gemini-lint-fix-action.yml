@@ -50,4 +50,11 @@ jobs:
           gh pr comment ${{ github.event.pull_request.number }} --body "$suggestion"
         done
 
+    - name: Upload Suggestions Artifact
+      if: failure()
+      uses: actions/upload-artifact@v2
+      with:
+        name: suggestions
+        path: suggestions.txt
+
 # This is a test comment to create a new commit on the test-github-action branch
