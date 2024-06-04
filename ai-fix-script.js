@@ -80,6 +80,8 @@ function sendApiRequest(payload) {
       console.log('Response headers:', res.headers);
       if (res.statusCode !== 200) {
         console.error(`HTTP error! status: ${res.statusCode}, body: ${data}`);
+        console.error('Full response headers:', res.headers);
+        console.error('Full response body:', data);
         return;
       }
 
