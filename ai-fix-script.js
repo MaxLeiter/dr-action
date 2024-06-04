@@ -126,9 +126,11 @@ function sendApiRequest(payload) {
     console.error('Error:', error);
   });
 
+  // Additional logging before sending the request
   console.log('Sending API request with payload:', payloadString);
   console.log('Payload size:', Buffer.byteLength(payloadString)); // Log the payload size
   console.log('Request options:', options); // Log the request options
+  console.log('Request headers:', options.headers); // Log the request headers
   req.write(payloadString);
   req.end();
 }
