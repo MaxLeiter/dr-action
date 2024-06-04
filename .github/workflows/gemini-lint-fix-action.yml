@@ -45,6 +45,9 @@ jobs:
         echo "Running Prettier..."
         pnpm run prettier --verbose | tee prettier.log
         echo "Prettier completed with exit code $?"
+        if [ ! -f prettier.log ]; then
+          touch prettier.log
+        fi
 
     - name: Output Prettier Log
       run: cat prettier.log
