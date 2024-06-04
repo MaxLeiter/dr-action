@@ -104,6 +104,7 @@ const req = https.request(options, res => {
       }
     } catch (error) {
       console.error('Error parsing API response:', error);
+      console.error('Raw response body:', data); // Log the raw response body for debugging
     }
   });
 });
