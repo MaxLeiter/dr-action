@@ -59,7 +59,7 @@ const options = {
   headers: {
     'Authorization': `Bearer ${process.env.GOOGLE_GENERATIVE_AI_API_KEY}`,
     'Content-Type': 'application/json',
-    'Content-Length': Buffer.byteLength(JSON.stringify(payload))
+    'Content-Length': Buffer.byteLength(JSON.stringify(payload), 'utf8')
   }
 };
 
