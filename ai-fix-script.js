@@ -6,11 +6,6 @@ const https = require('https');
 // Check if failed_files.txt exists
 if (!fs.existsSync('failed_files.txt')) {
   console.log('No failed files found.');
-  // Proceed with an empty array of files
-  const payload = {
-    files: []
-  };
-  sendApiRequest(payload);
   process.exit(0);
 }
 
@@ -24,11 +19,6 @@ console.log('Contents of failed_files.txt:', fs.readFileSync('failed_files.txt',
 // Handle the case where no failed files are found
 if (failedFiles.length === 0 || failedFiles[0] === 'No failed files found.') {
   console.log('No failed files found.');
-  // Proceed with an empty array of files
-  const payload = {
-    files: []
-  };
-  sendApiRequest(payload);
   process.exit(0);
 }
 
@@ -58,13 +48,12 @@ console.log('Environment variables:', process.env);
 // Ensure the payload is not empty before sending the request
 if (files.length === 0) {
   console.log('No valid files to send to the API.');
-  // Proceed with an empty array of files
-  sendApiRequest(payload);
   process.exit(0);
 }
 
 // Call the Google Generative AI API
 function sendApiRequest(payload) {
+  const payloadString = JSON.stringify(payload);
   const options = {
     hostname: 'ai.google.dev',
     path: '/api/rest',
@@ -72,7 +61,7 @@ function sendApiRequest(payload) {
     headers: {
       'Authorization': `Bearer ${process.env.GOOGLE_GENERATIVE_AI_API_KEY}`,
       'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(JSON.stringify(payload), 'utf8')
+      'Content-Length': Buffer.byteLength(payloadString, 'utf8')
     }
   };
 
@@ -127,9 +116,11 @@ function sendApiRequest(payload) {
     console.error('Error:', error);
   });
 
-  console.log('Sending API request with payload:', JSON.stringify(payload, null, 2));
-  req.write(JSON.stringify(payload));
+  console.log('Sending API request with payload:', payloadString);
+  req.write(payloadString);
   req.end();
 }
+
+sendApiRequest(payload);
 
 console.log('AI Fix Script completed.');
