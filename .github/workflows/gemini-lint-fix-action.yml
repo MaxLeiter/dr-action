@@ -69,6 +69,14 @@ jobs:
         else
           echo "failed_files.txt does not exist."
 
+    - name: Print failed_files.txt before running AI Fix Script
+      run: |
+        if [ -f failed_files.txt ]; then
+          echo "Contents of failed_files.txt before running AI Fix Script:"
+          cat failed_files.txt
+        else
+          echo "failed_files.txt does not exist before running AI Fix Script."
+
     - name: Run AI Fix Script
       run: |
         echo "Running AI Fix Script..."
