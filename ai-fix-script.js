@@ -42,6 +42,9 @@ const payload = {
 // Log the current working directory
 console.log('Current working directory:', process.cwd());
 
+// Log environment variables
+console.log('Environment variables:', process.env);
+
 // Ensure the payload is not empty before sending the request
 if (files.length === 0) {
   console.log('No valid files to send to the API.');
