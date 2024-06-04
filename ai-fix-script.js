@@ -6,6 +6,11 @@ const https = require('https');
 // Check if failed_files.txt exists
 if (!fs.existsSync('failed_files.txt')) {
   console.log('No failed files found.');
+  // Proceed with an empty array of files
+  const payload = {
+    files: []
+  };
+  sendApiRequest(payload);
   process.exit(0);
 }
 
@@ -19,6 +24,11 @@ console.log('Contents of failed_files.txt:', fs.readFileSync('failed_files.txt',
 // Handle the case where no failed files are found
 if (failedFiles.length === 0 || failedFiles[0] === 'No failed files found.') {
   console.log('No failed files found.');
+  // Proceed with an empty array of files
+  const payload = {
+    files: []
+  };
+  sendApiRequest(payload);
   process.exit(0);
 }
 
@@ -48,74 +58,78 @@ console.log('Environment variables:', process.env);
 // Ensure the payload is not empty before sending the request
 if (files.length === 0) {
   console.log('No valid files to send to the API.');
+  // Proceed with an empty array of files
+  sendApiRequest(payload);
   process.exit(0);
 }
 
 // Call the Google Generative AI API
-const options = {
-  hostname: 'ai.google.dev',
-  path: '/api/rest',
-  method: 'POST',
-  headers: {
-    'Authorization': `Bearer ${process.env.GOOGLE_GENERATIVE_AI_API_KEY}`,
-    'Content-Type': 'application/json',
-    'Content-Length': Buffer.byteLength(JSON.stringify(payload), 'utf8')
-  }
-};
-
-const req = https.request(options, res => {
-  let data = '';
-
-  res.on('data', chunk => {
-    data += chunk;
-  });
-
-  res.on('end', () => {
-    console.log('API call completed with status code:', res.statusCode);
-    console.log('Response headers:', res.headers);
-    if (res.statusCode !== 200) {
-      console.error(`HTTP error! status: ${res.statusCode}, body: ${data}`);
-      return;
+function sendApiRequest(payload) {
+  const options = {
+    hostname: 'ai.google.dev',
+    path: '/api/rest',
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${process.env.GOOGLE_GENERATIVE_AI_API_KEY}`,
+      'Content-Type': 'application/json',
+      'Content-Length': Buffer.byteLength(JSON.stringify(payload), 'utf8')
     }
+  };
 
-    // Log the raw data received from the API
-    console.log('Raw API response data:', data);
+  const req = https.request(options, res => {
+    let data = '';
 
-    try {
-      const response = JSON.parse(data);
-      console.log('API response:', JSON.stringify(response, null, 2));
+    res.on('data', chunk => {
+      data += chunk;
+    });
 
-      // Parse the response and create suggestions
-      const suggestions = response.suggestions.map(suggestion => {
-        return `\`\`\`suggestion\n${suggestion.diff}\n\`\`\``;
-      });
-
-      if (suggestions.length === 0) {
-        console.log('No suggestions received from the API.');
+    res.on('end', () => {
+      console.log('API call completed with status code:', res.statusCode);
+      console.log('Response headers:', res.headers);
+      if (res.statusCode !== 200) {
+        console.error(`HTTP error! status: ${res.statusCode}, body: ${data}`);
         return;
       }
 
-      // Write the suggestions to a file
+      // Log the raw data received from the API
+      console.log('Raw API response data:', data);
+
       try {
-        const suggestionsFilePath = `${process.cwd()}/suggestions.txt`;
-        fs.writeFileSync(suggestionsFilePath, suggestions.join('\n'), 'utf-8');
-        console.log(`Suggestions written to ${suggestionsFilePath}`);
+        const response = JSON.parse(data);
+        console.log('API response:', JSON.stringify(response, null, 2));
+
+        // Parse the response and create suggestions
+        const suggestions = response.suggestions.map(suggestion => {
+          return `\`\`\`suggestion\n${suggestion.diff}\n\`\`\``;
+        });
+
+        if (suggestions.length === 0) {
+          console.log('No suggestions received from the API.');
+          return;
+        }
+
+        // Write the suggestions to a file
+        try {
+          const suggestionsFilePath = `${process.cwd()}/suggestions.txt`;
+          fs.writeFileSync(suggestionsFilePath, suggestions.join('\n'), 'utf-8');
+          console.log(`Suggestions written to ${suggestionsFilePath}`);
+        } catch (error) {
+          console.error('Error writing suggestions to file:', error);
+        }
       } catch (error) {
-        console.error('Error writing suggestions to file:', error);
+        console.error('Error parsing API response:', error);
+        console.error('Raw response body:', data); // Log the raw response body for debugging
       }
-    } catch (error) {
-      console.error('Error parsing API response:', error);
-      console.error('Raw response body:', data); // Log the raw response body for debugging
-    }
+    });
   });
-});
 
-req.on('error', error => {
-  console.error('Error:', error);
-});
+  req.on('error', error => {
+    console.error('Error:', error);
+  });
 
-console.log('Sending API request with payload:', JSON.stringify(payload, null, 2));
-req.write(JSON.stringify(payload));
-req.end();
+  console.log('Sending API request with payload:', JSON.stringify(payload, null, 2));
+  req.write(JSON.stringify(payload));
+  req.end();
+}
 
 console.log('AI Fix Script completed.');
