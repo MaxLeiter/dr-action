@@ -72,6 +72,9 @@ jobs:
     - name: Run AI Fix Script
       run: |
         echo "Running AI Fix Script..."
+        echo "Current working directory: $(pwd)"
+        echo "Environment variables:"
+        printenv
         node ai-fix-script.js
         echo "AI Fix Script completed."
 
