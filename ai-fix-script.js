@@ -61,7 +61,7 @@ function sendApiRequest(payload) {
     headers: {
       'Authorization': `Bearer ${process.env.GOOGLE_GENERATIVE_AI_API_KEY}`,
       'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(payloadString)
+      'Content-Length': Buffer.byteLength(Buffer.from(payloadString, 'utf-8'))
     }
   };
 
