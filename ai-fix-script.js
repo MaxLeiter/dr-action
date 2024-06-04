@@ -76,6 +76,9 @@ const req = https.request(options, res => {
       return;
     }
 
+    // Log the raw data received from the API
+    console.log('Raw API response data:', data);
+
     try {
       const response = JSON.parse(data);
       console.log('API response:', JSON.stringify(response, null, 2));
