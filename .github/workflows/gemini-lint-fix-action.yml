@@ -83,6 +83,8 @@ jobs:
         echo "Current working directory: $(pwd)"
         echo "Environment variables:"
         printenv
+        echo "Checking if node command is available..."
+        which node
         node ai-fix-script.js
         if [ $? -ne 0 ]; then
           echo "AI Fix Script encountered an error."
