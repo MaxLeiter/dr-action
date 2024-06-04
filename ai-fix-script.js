@@ -128,6 +128,7 @@ function sendApiRequest(payload) {
 
   console.log('Sending API request with payload:', payloadString);
   console.log('Payload size:', Buffer.byteLength(payloadString)); // Log the payload size
+  console.log('Request options:', options); // Log the request options
   req.write(payloadString);
   req.end();
 }
