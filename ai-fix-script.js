@@ -71,6 +71,7 @@ const req = https.request(options, res => {
 
   res.on('end', () => {
     console.log('API call completed with status code:', res.statusCode);
+    console.log('Response headers:', res.headers);
     if (res.statusCode !== 200) {
       console.error(`HTTP error! status: ${res.statusCode}, body: ${data}`);
       return;
