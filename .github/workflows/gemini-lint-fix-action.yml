@@ -35,6 +35,7 @@ jobs:
         echo "Running ESLint..."
         pnpm run lint --verbose | tee eslint.log
         echo "ESLint completed with exit code $?"
+        cat eslint.log
 
     - name: Output ESLint Log
       run: cat eslint.log
@@ -48,6 +49,7 @@ jobs:
         if [ ! -f prettier.log ]; then
           touch prettier.log
         fi
+        cat prettier.log
 
     - name: Output Prettier Log
       run: cat prettier.log
