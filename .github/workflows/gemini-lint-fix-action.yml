@@ -84,7 +84,11 @@ jobs:
         echo "Environment variables:"
         printenv
         node ai-fix-script.js
-        echo "AI Fix Script completed."
+        if [ $? -ne 0 ]; then
+          echo "AI Fix Script encountered an error."
+        else
+          echo "AI Fix Script completed successfully."
+        fi
 
     - name: Parse and Comment Suggestions
       run: |
