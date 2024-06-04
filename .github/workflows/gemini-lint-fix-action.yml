@@ -62,6 +62,7 @@ jobs:
       run: |
         echo "Running AI Fix Script..."
         node ai-fix-script.js
+        echo "AI Fix Script completed."
 
     - name: Parse and Comment Suggestions
       run: |
