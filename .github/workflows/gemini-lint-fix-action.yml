@@ -85,11 +85,17 @@ jobs:
         printenv
         echo "Checking if node command is available..."
         which node
+        echo "Running node ai-fix-script.js..."
         node ai-fix-script.js
         if [ $? -ne 0 ]; then
           echo "AI Fix Script encountered an error."
         else
           echo "AI Fix Script completed successfully."
+        echo "Contents of suggestions.txt after running AI Fix Script:"
+        if [ -f suggestions.txt ]; then
+          cat suggestions.txt
+        else
+          echo "suggestions.txt does not exist."
 
     - name: Parse and Comment Suggestions
       run: |
