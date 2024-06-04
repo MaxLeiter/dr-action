@@ -26,6 +26,9 @@ jobs:
     - name: List all files
       run: ls -R
 
+    - name: Print Node.js version
+      run: node -v
+
     - name: Run ESLint
       id: eslint
       run: pnpm run lint --verbose | tee eslint.log
@@ -57,6 +60,14 @@ jobs:
           cat failed_files.txt
         else
           echo "No failed files found."
+
+    - name: Check failed_files.txt presence and content
+      run: |
+        if [ -f failed_files.txt ]; then
+          echo "failed_files.txt exists."
+          cat failed_files.txt
+        else
+          echo "failed_files.txt does not exist."
 
     - name: Run AI Fix Script
       run: |
