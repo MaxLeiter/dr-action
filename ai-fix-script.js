@@ -83,6 +83,14 @@ function sendApiRequest(payload) {
       // Log the raw data received from the API
       console.log('Raw API response data:', data);
 
+      // Check if the response is JSON
+      const contentType = res.headers['content-type'];
+      if (!contentType || !contentType.includes('application/json')) {
+        console.error('Expected JSON response but received:', contentType);
+        console.error('Raw response body:', data);
+        return;
+      }
+
       try {
         const response = JSON.parse(data);
         console.log('API response:', JSON.stringify(response, null, 2));
