@@ -31,14 +31,20 @@ jobs:
 
     - name: Run ESLint
       id: eslint
-      run: pnpm run lint --verbose | tee eslint.log
+      run: |
+        echo "Running ESLint..."
+        pnpm run lint --verbose | tee eslint.log
+        echo "ESLint completed with exit code $?"
 
     - name: Output ESLint Log
       run: cat eslint.log
 
     - name: Run Prettier
       id: prettier
-      run: pnpm run prettier --verbose | tee prettier.log
+      run: |
+        echo "Running Prettier..."
+        pnpm run prettier --verbose | tee prettier.log
+        echo "Prettier completed with exit code $?"
 
     - name: Output Prettier Log
       run: cat prettier.log
