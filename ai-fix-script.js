@@ -54,6 +54,7 @@ if (files.length === 0) {
 // Call the Google Generative AI API
 function sendApiRequest(payload) {
   const payloadString = JSON.stringify(payload);
+  const contentLength = Buffer.byteLength(payloadString, 'utf8');
   const options = {
     hostname: 'ai.google.dev',
     path: '/api/rest',
@@ -61,9 +62,11 @@ function sendApiRequest(payload) {
     headers: {
       'Authorization': `Bearer ${process.env.GOOGLE_GENERATIVE_AI_API_KEY}`,
       'Content-Type': 'application/json',
-      'Content-Length': Buffer.byteLength(payloadString, 'utf8')
+      'Content-Length': contentLength
     }
   };
+
+  console.log('Calculated Content-Length:', contentLength);
 
   const req = https.request(options, res => {
     let data = '';
